@@ -5,11 +5,25 @@ import XCTest
 final class WeakArrayTests: XCTestCase {
     private class Ref: NSObject {}
 
-    func test_initWithArrayLiteral() {
+    func test_init_withoutParameters() {
+        let sut = WeakArray<Ref>()
+
+        XCTAssertTrue(sut.isEmpty)
+    }
+
+    func test_init_withVariadicParameters() {
+        let sut = WeakArray<Ref>(Ref(), Ref(), Ref())
+
+        XCTAssertEqual(sut.count, 3)
+        XCTAssertEqual(sut, [nil, nil, nil])
+    }
+
+    func test_init_withArrayLiteral() {
         let keptItem = Ref()
         let sut: WeakArray<Ref> = [keptItem, Ref(), Ref()]
 
-        XCTAssertEqual(sut.map { $0 }, [keptItem, nil, nil])
+        XCTAssertEqual(sut.count, 3)
+        XCTAssertEqual(sut, [keptItem, nil, nil])
     }
 
     func test_equatable() {
@@ -21,6 +35,10 @@ final class WeakArrayTests: XCTestCase {
 
         XCTAssertNotEqual(items1, items2)
         XCTAssertNotEqual(sut1, sut2)
+        XCTAssertNotEqual(sut1, [])
+
+        let allNils = [Ref?](repeating: nil, count: items2.count)
+        XCTAssertNotEqual(sut2, WeakArray(allNils))
     }
 
     func test_twoArraysWithSameLengthAndAllDeallocatedReferences_shouldBeEqual() {
@@ -78,7 +96,7 @@ final class WeakArrayTests: XCTestCase {
         let items = makeRefs()
         let sut = WeakArray(items)
 
-        sut.assertEachItemNotNil()
+        XCTAssert(sut.reversed().first! === items.last)
     }
 
     func test_arrayIsMutable() {
@@ -100,6 +118,18 @@ final class WeakArrayTests: XCTestCase {
         anotherItem = nil
 
         XCTAssertNil(sut[2])
+    }
+
+    func test_replaceSubrange() {
+        let refs = makeRefs(n: 10)
+        var sut = WeakArray(refs)
+
+        let replacingRefs = makeRefs(n: 5)
+        sut.replaceSubrange(0..<replacingRefs.count, with: replacingRefs)
+
+        var newRefs = replacingRefs
+        newRefs.append(contentsOf: refs.suffix(5))
+        XCTAssertEqual(sut, WeakArray(newRefs))
     }
 
     func test_hashable() {
