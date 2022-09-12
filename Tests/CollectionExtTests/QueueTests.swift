@@ -37,6 +37,15 @@ final class QueueTests: XCTestCase {
 
         XCTAssertEqual(sut1, sut2)
     }
+
+    func test_hashable() {
+        var sut1: Queue<Int> = [0, 0, 1, 2, 3].convertToQueue()
+        let sut2: Queue<Int> = [0, 1, 2, 3].convertToQueue()
+
+        sut1.dequeue()
+
+        XCTAssertEqual(sut1.hashValue, sut2.hashValue)
+    }
 }
 
 private extension Array {
