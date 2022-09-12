@@ -83,8 +83,6 @@ extension WeakArray: Equatable where T: Equatable {
 
 extension WeakArray: Hashable where T: Hashable {
     public func hash(into hasher: inout Hasher) {
-        boxes.forEach {
-            hasher.combine($0.weakObject)
-        }
+        boxes.map(\.weakObject).hash(into: &hasher)
     }
 }

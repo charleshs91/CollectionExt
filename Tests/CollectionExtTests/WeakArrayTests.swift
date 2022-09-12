@@ -102,6 +102,13 @@ final class WeakArrayTests: XCTestCase {
         XCTAssertNil(sut[2])
     }
 
+    func test_hashable() {
+        let items: [Ref?] = makeRefs()
+        let sut = WeakArray(items)
+
+        XCTAssertEqual(items.hashValue, sut.hashValue)
+    }
+
     private func makeRefs(n: Int = 5) -> [Ref] {
         (0 ..< n).map { _ in Ref() }
     }
