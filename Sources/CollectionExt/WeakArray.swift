@@ -51,6 +51,13 @@ extension WeakArray: Collection, BidirectionalCollection, MutableCollection, Ran
     public func index(before i: Index) -> Index {
         return boxes.index(before: i)
     }
+
+    public mutating func replaceSubrange<C>(
+        _ subrange: Range<Int>,
+        with newElements: C
+    ) where C: Collection,  C.Element == T? {
+        boxes.replaceSubrange(subrange, with: newElements.map(WeakBox.init))
+    }
 }
 
 extension WeakArray: Equatable where T: Equatable {
