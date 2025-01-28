@@ -3,7 +3,7 @@ import CollectionExt
 import UIKit
 import XCTest
 
-final class SequenceHolder_DepthFirstSearchTests: XCTestCase {
+final class SequenceTree_DepthFirstSearchTests: XCTestCase {
     private var rootView: UIView!
     private var stackView: UIStackView!
     private var secondStackView: UIStackView!
@@ -63,7 +63,7 @@ final class SequenceHolder_DepthFirstSearchTests: XCTestCase {
     }
 }
 
-final class SequenceHolder_BreadthFirstSearchTests: XCTestCase {
+final class SequenceTree_BreadthFirstSearchTests: XCTestCase {
     private var rootView: UIView!
     private var stackView: UIStackView!
     private var secondStackView: UIStackView!

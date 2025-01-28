@@ -1,7 +1,9 @@
-import Foundation
+extension Array {
 
-public extension Array {
-    mutating func mutate(_ transform: (inout Element) -> Void) {
+    @inlinable
+    public mutating func mutate(
+        transform: (inout Element) -> Void
+    ) {
         for (index, element) in enumerated() {
             var element = element
             transform(&element)
@@ -9,9 +11,10 @@ public extension Array {
         }
     }
 
-    mutating func mutate(
+    @inlinable
+    public mutating func mutate(
         where predicate: (Element) -> Bool,
-        _ transform: (inout Element) -> Void
+        transform: (inout Element) -> Void
     ) {
         for (index, element) in enumerated() where predicate(element) {
             var element = element
@@ -20,17 +23,19 @@ public extension Array {
         }
     }
 
-    mutating func mutate(
+    @inlinable
+    public mutating func mutate(
         ifEqualTo other: Element,
-        _ transform: (inout Element) -> Void
+        transform: (inout Element) -> Void
     ) where Element: Equatable {
-        mutate(where: { $0 == other }, transform)
+        mutate(where: { $0 == other }, transform: transform)
     }
 
-    mutating func mutate(
+    @inlinable
+    public mutating func mutate(
         ifEqualToAny candidates: [Element],
-        _ transform: (inout Element) -> Void
+        transform: (inout Element) -> Void
     ) where Element: Equatable {
-        mutate(where: { candidates.contains($0) }, transform)
+        mutate(where: { candidates.contains($0) }, transform: transform)
     }
 }

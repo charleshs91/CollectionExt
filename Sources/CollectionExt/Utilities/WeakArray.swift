@@ -1,15 +1,15 @@
 import Foundation
 
 /// A collection that keeps a weak reference to each of its elements.
-///
 public struct WeakArray<T: AnyObject>: ExpressibleByArrayLiteral {
+
     private var boxes: [WeakBox<T>]
 
     public init() {
         boxes = []
     }
 
-    public init(_ elements: [T?]) {
+    public init(_ elements: [T?] = []) {
         boxes = elements.map(WeakBox.init)
     }
 
@@ -29,6 +29,7 @@ public struct WeakArray<T: AnyObject>: ExpressibleByArrayLiteral {
 }
 
 extension WeakArray: Collection, BidirectionalCollection, MutableCollection, RangeReplaceableCollection {
+
     public typealias Index = Int
 
     public var startIndex: Index { boxes.startIndex }
@@ -61,6 +62,7 @@ extension WeakArray: Collection, BidirectionalCollection, MutableCollection, Ran
 }
 
 extension WeakArray: Equatable where T: Equatable {
+
     public static func == (lhs: WeakArray<T>, rhs: WeakArray<T>) -> Bool {
         guard lhs.count == rhs.count else { return false }
 
@@ -82,6 +84,7 @@ extension WeakArray: Equatable where T: Equatable {
 }
 
 extension WeakArray: Hashable where T: Hashable {
+    
     public func hash(into hasher: inout Hasher) {
         boxes.map(\.weakObject).hash(into: &hasher)
     }
